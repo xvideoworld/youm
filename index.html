@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liquid Glass Gallery</title>
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Comfortaa:wght@500&display=swap" rel="stylesheet">
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Allura', cursive;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 40px;
+  background: linear-gradient(135deg,
+    #a8edea 0%,
+    #fed6e3 30%,
+    #d4b8ff 60%,
+    #ffecd2 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  left: -200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,237,234,0.8), rgba(254,214,227,0.4));
+  filter: blur(80px);
+  z-index: 0;
+  animation: drift1 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  bottom: -150px;
+  right: -150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,184,255,0.8), rgba(255,236,210,0.4));
+  filter: blur(80px);
+  z-index: 0;
+  animation: drift2 15s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes drift1 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(60px, 40px, 0); }
+}
+
+@keyframes drift2 {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-40px, -60px, 0); }
+}
+
+.container {
+  width: 92%;
+  max-width: 800px;
+  margin: auto;
+  position: relative;
+  z-index: 5;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.03),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.hero {
+  margin-top: 20px;
+  padding: 25px 25px;
+  border-radius: 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.hero h1 {
+  font-family: 'Comfortaa', sans-serif;
+  font-size: 34px;
+  color: #1a1a1a;
+  line-height: 1.2;
+  position: relative;
+  z-index: 5;
+}
+
+.hero p {
+  margin-top: 12px;
+  font-size: 21px;
+  color: #222;
+  line-height: 1.3;
+  position: relative;
+  z-index: 5;
+}
+
+/* Glass Surface Rain Drops Overlay */
+.rain-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.drop {
+  position: absolute;
+  bottom: 100%;
+  width: 3px;
+  height: 24px;
+  background: linear-gradient(transparent, rgba(255, 255, 255, 0.95));
+  border-radius: 50%;
+  box-shadow: 0px 2px 5px rgba(255, 255, 255, 0.8);
+  animation: fall 5s linear infinite;
+  will-change: transform;
+}
+
+.drop:nth-child(1) { left: 6%; animation-delay: 0s; animation-duration: 4.8s; width: 3.5px; }
+.drop:nth-child(2) { left: 19%; animation-delay: 1.2s; animation-duration: 5.5s; width: 2.5px; }
+.drop:nth-child(3) { left: 34%; animation-delay: 2.5s; animation-duration: 4.2s; width: 3px; }
+.drop:nth-child(4) { left: 52%; animation-delay: 0.4s; animation-duration: 6s; width: 4px; }
+.drop:nth-child(5) { left: 68%; animation-delay: 3.1s; animation-duration: 5.1s; width: 2px; }
+.drop:nth-child(6) { left: 82%; animation-delay: 1.8s; animation-duration: 4.6s; width: 3.2px; }
+.drop:nth-child(7) { left: 93%; animation-delay: 0.8s; animation-duration: 5.8s; width: 2.8px; }
+.drop:nth-child(8) { left: 43%; animation-delay: 2.1s; animation-duration: 4.9s; width: 3.5px; }
+
+@keyframes fall {
+  0% { transform: translate3d(0, -30px, 0); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { transform: translate3d(0, 350px, 0); opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -6px, 0); }
+}
+
+/* Dynamic Grid with Natural Image Heights */
+.grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.card {
+  padding: 8px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: max-content;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  animation: fadeUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+  will-change: transform;
+}
+
+.card:hover {
+  transform: translate3d(0, -5px, 0) scale(1.01);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+.img-wrapper {
+  border-radius: 18px;
+  overflow: hidden;
+  width: 100%;
+  cursor: pointer;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  background: rgba(255,255,255,0.05);
+  transition: transform 0.4s ease;
+}
+
+.card:hover img {
+  transform: scale(1.02);
+}
+
+.download-btn {
+  display: block;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Allura', cursive;
+  font-size: 25px;
+  color: #1a1a1a;
+  padding: 6px 12px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.7);
+  transition: transform 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.45);
+}
+
+/* LIGHTBOX MODAL SYSTEM */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+
+.lightbox-content {
+  width: 90%;
+  max-width: 480px;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 32px;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  color: #1a1a1a;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1010;
+}
+
+.lightbox-main-img {
+  width: 100%;
+  max-height: 52vh;
+  object-fit: contain;
+  border-radius: 20px;
+}
+
+.lightbox .download-btn {
+  width: 85%;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.lightbox-carousel {
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 8px 4px;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  scrollbar-width: thin;
+}
+
+.lightbox-carousel::-webkit-scrollbar {
+  height: 4px;
+}
+.lightbox-carousel::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.4);
+  border-radius: 10px;
+}
+
+.thumb-img {
+  width: 55px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-right: 8px;
+  cursor: pointer;
+  display: inline-block;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.thumb-img.active-thumb {
+  border-color: #1a1a1a;
+  transform: scale(1.04);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translate3d(0, 20px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .hero {
+    padding: 18px 20px;
+    margin-top: 15px;
+  }
+  .hero h1 { font-size: 28px; }
+  .hero p { font-size: 16px; line-height: 1.3; }
+  .download-btn { font-size: 22px; padding: 5px 10px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="hero glass">
+    <div class="rain-container">
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+      <div class="drop"></div>
+    </div>
+
+    <h1>Welcome</h1>
+    <p>
+      You can download anything you want from this website and use it freely
+      in your videos without any copyright issues. Explore premium visuals,
+      cinematic backgrounds, aesthetic clips and high quality content to make
+      your videos more beautiful, professional and attractive.
+    </p>
+  </div>
+
+  <div class="grid" id="galleryGrid"></div>
+</div>
+
+<div class="lightbox" id="imageLightbox">
+  <div class="lightbox-content">
+    <button class="close-btn" onclick="closeLightbox()">&times;</button>
+    <img src="" id="lightboxImg" class="lightbox-main-img" alt="Main View">
+    <button id="lightboxDownloadBtn" class="download-btn">Download</button>
+    <div class="lightbox-carousel" id="lightboxCarousel"></div>
+  </div>
+</div>
+
+<script>
+const images = [
+  "https://i.postimg.cc/VLXNrnLK/d5e653b15434ff4e6338b3056155ae1f.jpg",
+  "https://i.postimg.cc/TP324sq2/834706b3eba71286657ccb6fd303dfd1.jpg",
+  "https://i.postimg.cc/tCGqjJt3/5cfa92a595c878a0c420e86a5e51f053.jpg",
+  "https://i.postimg.cc/CMk0mYT8/f3d9fd078fc20a7af49341e53ea6b330.jpg",
+  "https://i.postimg.cc/3xSQdxmY/1916a86785e522555ab9663dc9b4075d.jpg",
+  "https://i.postimg.cc/wMdSSy8w/05b35467f449b65c5e73e017055810b7.jpg",
+  "https://i.postimg.cc/5NgZR2PQ/938f69d37b8bf8b0b8628546b6717f0d.jpg",
+  "https://i.postimg.cc/BvryKL6S/f11db504e778bc8b8beed896071e89a5.jpg",
+  "https://i.postimg.cc/MGCNgshG/847837100524cd94d019ec0aef6d06cd.jpg",
+  "https://i.postimg.cc/7L2Q13bR/74869a4ae3a4d27efe63c344e7a9f474.jpg",
+  "https://i.postimg.cc/MT0PNz7F/9bff13d1925aa0a39958ef5063419e75.jpg",
+  "https://i.postimg.cc/bNV6KCnj/fbdfb8c0b52fa8009abd3ab3ffcdd007.jpg",
+  "https://i.postimg.cc/MGVdfzFG/720519956c10816031add7725fc28b35.jpg",
+  "https://i.postimg.cc/HWB3yZBv/1327fc64cdbc62212301e327e9e43477.jpg",
+  "https://i.postimg.cc/N0qxcWfz/48e8f8a8031fb80842e0bd711f906a1a.jpg",
+  "https://i.postimg.cc/sX39B7WH/8b5db21a1c6c69ec159460e174fdf82a.jpg",
+  "https://i.postimg.cc/NfK8rgyh/caf94fdefa8b2af2d53412bd60a95858.jpg",
+  "https://i.postimg.cc/5tV8GLnT/4faeb0ed948a936e5dfb48ce6cdce0d1.jpg",
+  "https://i.postimg.cc/c4tYLXjv/743ef17e6741ff080281b5f65718c285.jpg",
+  "https://i.postimg.cc/g0m64d0G/1af01565e88b44dd22cd187973a2672a.jpg",
+  "https://i.postimg.cc/2ybq3SHf/3618d191221fc4667c90d0c6c3814bbf.jpg",
+  "https://i.postimg.cc/qvdtM0yY/49ef580a1e1e306b10f678cf1b44ea2e.jpg",
+  "https://i.postimg.cc/TPth9DSt/b891c138b9b9bb7ebc6b08b85d90b93f.jpg",
+  "https://i.postimg.cc/pVpsMNfd/3624c514112f6a76b7e124bf49ebe00d.jpg",
+  "https://i.postimg.cc/3wkkJZnC/77ac40ee090c479e8ae201fa1327ea37.jpg",
+  "https://i.postimg.cc/D0PZYpw8/279e19bbc68dc3b239091fa24884fb7d.jpg",
+  "https://i.postimg.cc/Qdtt0bGN/56c3de75a470dc2584b23d012d49323b.jpg",
+  "https://i.postimg.cc/7h9HNCK7/9eab61e992fddbbafb9696f3766cdfb6.jpg",
+  "https://i.postimg.cc/BQZQngv8/68048d29976e85e2d8f4941f3d0d698e.jpg",
+  "https://i.postimg.cc/rw38g2NJ/0ba50a3e54dbd43127cd4dd1ea408e6f.jpg",
+  "https://i.postimg.cc/J7xMvkQz/3e6928b49bdb85f3f89f7a8632b066f3.jpg",
+  "https://i.postimg.cc/mgz4P6Wr/9d20df92bb5eff93a50eb596fcf4c4f0.jpg",
+  "https://i.postimg.cc/FFTXDQ9s/e5ce7e0348fa2942c8bef5795d825165.jpg",
+  "https://i.postimg.cc/43QSyzyv/6ce65522a9a39aefb7a8e01ceb6ecce5.jpg",
+  "https://i.postimg.cc/tJYSBw5N/1f8071bd1a6bea81ddf0ead5ff3aff65.jpg",
+  "https://i.postimg.cc/9XnNDXmZ/3b7f45b3842295b84fc75749ca95c1bd.jpg",
+  "https://i.postimg.cc/QdL4q6W7/f1b59fea6952aa52039ad8286a8cdbdb.jpg",
+  "https://i.postimg.cc/9MfJfKvH/eb02480532d7b56d838569d5d6a43028.jpg",
+  "https://i.postimg.cc/WpdcWHtx/889bd859946732145bc5652c15f9513a.jpg",
+  "https://i.postimg.cc/XYcRBM1T/dfc844d01c0f2f03455a2b8d0ab74818.jpg",
+  "https://i.postimg.cc/KzVwhm4j/55ece5dc88e2f14d249c28ac01b7771c.jpg",
+  "https://i.postimg.cc/SQB3ZQB0/62cb42cfb63d62944e391892999f93c6.jpg",
+  "https://i.postimg.cc/Hk2NswV8/aef713a78322e5aaff5770dda21d22d0.jpg",
+  "https://i.postimg.cc/pTgG1k1k/bd093bfed7e0c3160e235b2af7edd249.jpg",
+  "https://i.postimg.cc/8PgXRKvV/8142f1ec69d8c71dba1acb4679ac5571.jpg",
+  "https://i.postimg.cc/XYV2hrQp/e417b403fb0276781d6a674d6bb452f1.jpg",
+  "https://i.postimg.cc/fL05XmTS/68a536f9fb19a1b56d95f143246c9fc0.jpg",
+  "https://i.postimg.cc/pVzqLf64/24e3b9aae01a878b4a90d7039a236391.jpg",
+  "https://i.postimg.cc/QdxbmRxR/4e13ac3b849d7e3388502910828e28fa.jpg",
+  "https://i.postimg.cc/QMr8K9Zj/2b3244d0aaa211c0ea9d19c2cde281a3.jpg",
+  "https://i.postimg.cc/RV64PQvs/bbb1ec5de9045074e87d9fa208740d03.jpg",
+  "https://i.postimg.cc/43ZGNDpG/3bedf0bc2917891d4c42912d4f14fd10.jpg",
+  "https://i.postimg.cc/j2W0FtY2/6945bdda4cbfe8b705a14cb2c51a15e0.jpg",
+  "https://i.postimg.cc/VN4xsdYJ/e8f2c7560968e00b0b7a9447b510c859.jpg",
+  "https://i.postimg.cc/DmVDpGgT/e44dcc43c5e25a54795212e3228f6cae.jpg",
+  "https://i.postimg.cc/QNRdZnYh/3793fa4d9239964733de42dcc468ec58.jpg",
+  "https://i.postimg.cc/Sx4QJYhp/6b60e2f96cb560eef0d87ef517f2bafa.jpg",
+  "https://i.postimg.cc/gJxmfvv8/f753b386b31120d11be58c912a8b4133.jpg",
+  "https://i.postimg.cc/8C5S6hXd/420802f9975991fe0681056867499991.jpg",
+  "https://i.postimg.cc/bN9cV6KM/33f3e198a05aa3814fda4c4d46da3c23.jpg",
+  "https://i.postimg.cc/nzDN4T43/9a826a84ee8a6cc295fe6a213267308a.jpg",
+  "https://i.postimg.cc/Rh188Fbc/c4f991e75b14a751eb79b1d2c9d59dae.jpg",
+  "https://i.postimg.cc/GmmN7bP9/8cb92601e413e906ac5e2d14b39d070b.jpg",
+  "https://i.postimg.cc/zDwcqy0R/f70b9dc59cf9f40b92bd8dbdcdc8080f.jpg",
+  "https://i.postimg.cc/LXKxpSPq/50adfb35289ca33aa2765aaa4d18b68f.jpg",
+  "https://i.postimg.cc/DyyBFBWK/bbbe5c6d4637520a1e072fa42c148f74.jpg",
+  "https://i.postimg.cc/85SmYH8v/e971484e6d8d24b2e037b16c6bb70045.jpg",
+  "https://i.postimg.cc/PJ6bPnCg/656fadac7796991e66bf92a620cecb44.jpg",
+  "https://i.postimg.cc/k5rQVcgL/7d27f535a39414c7ea3f6db09bee518f.jpg",
+  "https://i.postimg.cc/kGh87NZg/72d91ad74f2d4fb47fedd478d1ce8520.jpg",
+  "https://i.postimg.cc/g2hRPZHM/12bd10754e32f8cbefb2495a7c7095ca.jpg",
+  "https://i.postimg.cc/W3NJrfL9/a49a719dd8c29a0f08dcbbbab49d4a03.jpg"
+];
+
+const gridContainer = document.getElementById('galleryGrid');
+const carouselContainer = document.getElementById('lightboxCarousel');
+const lightbox = document.getElementById('imageLightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxDownloadBtn = document.getElementById('lightboxDownloadBtn');
+
+images.forEach((url, index) => {
+  const card = document.createElement('div');
+  card.className = 'card glass';
+  card.innerHTML = `
+    <div class="img-wrapper" onclick="openLightbox(${index})">
+      <img src="${url}" alt="Visual ${index + 1}" loading="lazy">
+    </div>
+    <button onclick="triggerDownload('${url}', 'visual-${index + 1}.jpg')" class="download-btn">Download</button>
+  `;
+  gridContainer.appendChild(card);
+
+  const thumb = document.createElement('img');
+  thumb.src = url;
+  thumb.className = 'thumb-img';
+  thumb.id = `thumb-${index}`;
+  thumb.onclick = () => selectLightboxImage(index);
+  carouselContainer.appendChild(thumb);
+});
+
+let currentIndex = 0;
+
+function openLightbox(index) {
+  lightbox.classList.add('active');
+  selectLightboxImage(index);
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+}
+
+function selectLightboxImage(index) {
+  currentIndex = index;
+  const targetUrl = images[index];
+  
+  lightboxImg.src = targetUrl;
+  lightboxDownloadBtn.setAttribute('onclick', `triggerDownload('${targetUrl}', 'visual-${index + 1}.jpg')`);
+
+  document.querySelectorAll('.thumb-img').forEach(img => img.classList.remove('active-thumb'));
+  const activeThumb = document.getElementById(`thumb-${index}`);
+  if (activeThumb) {
+    activeThumb.classList.add('active-thumb');
+    activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+}
+
+function triggerDownload(imgUrl, fileName) {
+  fetch(imgUrl)
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(() => {
+      window.open(imgUrl, '_blank');
+    });
+}
+
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) {
+    closeLightbox();
+  }
+});
+</script>
+
+</body>
+</html>
